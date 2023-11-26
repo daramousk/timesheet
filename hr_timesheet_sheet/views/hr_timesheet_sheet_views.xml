@@ -110,6 +110,7 @@
                         </group>
                     </group>
                     <field name="new_line_ids" invisible="1" />
+                    <field name="list_work_time_per_day" invisible="1"/>
                     <notebook>
                         <page string="Summary">
                             <group name="Sheet" class="hr_timesheet_sheet_summary">

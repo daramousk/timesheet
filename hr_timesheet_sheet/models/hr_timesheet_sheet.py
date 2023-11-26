@@ -5,6 +5,7 @@
 
 import logging
 import re
+import json
 from collections import namedtuple
 from datetime import datetime, time
 
@@ -163,6 +164,16 @@ class Sheet(models.Model):
         compute="_compute_can_review", search="_search_can_review"
     )
     complete_name = fields.Char(compute="_compute_complete_name")
+    list_work_time_per_day = fields.Text(compute="_compute_list_work_time_per_day")
+
+    def _compute_list_work_time_per_day(self):
+        for rec in self:
+            rec.list_work_time_per_day = str(json.dumps([
+                0 if x[1] < 0.2 else x[1] for x in self.employee_id.list_work_time_per_day(
+                    datetime.combine(self.date_start, datetime.min.time()),
+                    datetime.combine(self.date_end, datetime.min.time()),
+                )
+            ]))
 
     @api.depends("date_start", "date_end")
     def _compute_name(self):
